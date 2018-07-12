@@ -24,7 +24,7 @@ export default class App extends Component {
     enableplay:false
   }
   updateIndex = index => {
-    this.setState({ index })
+    this.setState({ index });
   }
   onChangeText = (e) => {
     this.setState({ sentence: e.target.value })
