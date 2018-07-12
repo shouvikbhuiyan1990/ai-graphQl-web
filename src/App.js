@@ -20,7 +20,8 @@ export default class App extends Component {
     codes,
     sentence: '',
     mp3Url: '',
-    loading: false
+    loading: false,
+    enableplay:false
   }
   updateIndex = index => {
     this.setState({ index })
@@ -32,11 +33,13 @@ export default class App extends Component {
     if (this.state.sentence === '') return
     const code = codes[this.state.index].code
     try {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
+      this.setState({ enableplay: false });
       const translation = await API.graphql(graphqlOperation(query, { sentence: this.state.sentence, code: code }))
       const { sentence } = translation.data.getTranslatedSentence
       const mp3Url = `https://s3.ap-south-1.amazonaws.com/shouvik-appsync-lambda-ai/${sentence}`
-      this.setState({ mp3Url, loading: false })
+      this.setState({ mp3Url, loading: false });
+      this.setState({ enableplay: true });
     } catch (error) {
       console.log('error translating : ', error)
       this.setState({ loading: false })
@@ -53,10 +56,11 @@ export default class App extends Component {
     }
   }
   render() {
+    
     return (
      <div className="body">
       <div>
-        <ButtonGroup buttons={buttons} onButtonClick={this.updateIndex} />
+        <ButtonGroup activebtn={this.state.index} buttons={buttons} onButtonClick={this.updateIndex} />
         <textarea 
         value={this.state.sentence} 
         onChange={this.onChangeText} 
@@ -67,11 +71,16 @@ export default class App extends Component {
             className="btn btn-primary"
             onClick={this.translate}>Translate
           </button>
-          <button
+          { this.state.enableplay &&
+            <button
             className="btn btn-primary"
             onClick={this.playSound}>Play Sound
-          </button>
+            </button>
+          }
         </div>
+        { this.state.loading &&
+        <div className="loader"><span class="symbol"></span></div>
+        }
       </div>
      </div>
     );

@@ -2,6 +2,7 @@ import React from 'react'
 
 export default ({
     buttons,
+    activebtn,
     onButtonClick
 })=> (
     <div className="btn-group-parent">
@@ -9,7 +10,7 @@ export default ({
             buttons && (
                 buttons.map((value,index)=>{
                     return (
-                        <button className="btn" key={index} onClick={()=>onButtonClick(index)}>{value}</button>
+                    <button className="btn" key={index} onClick={()=>onButtonClick(index)}>{(activebtn === index) && <i></i>}{value}</button>
                     )
                 })
             )
