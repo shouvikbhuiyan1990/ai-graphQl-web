@@ -10,7 +10,11 @@ export default ({
             buttons && (
                 buttons.map((value,index)=>{
                     return (
-                    <button className="btn" key={index} onClick={()=>onButtonClick(index)}>{(activebtn === index) && <i></i>}{value}</button>
+                    <button 
+                        className={"btn " + ( (activebtn === index) ? 'selected' : '' ) }
+                        key={index} 
+                        onClick={()=>onButtonClick(index)}>{value}
+                    </button>
                     )
                 })
             )
